@@ -1,0 +1,285 @@
+>> conn = database('university_db','root','')
+
+conn = 
+
+  connection with properties:
+
+                  DataSource: 'university_db'
+                    UserName: 'root'
+                     Message: ''
+                        Type: 'ODBC Connection Object'
+  Database Properties:
+
+                  AutoCommit: 'on'
+                    ReadOnly: 'off'
+                LoginTimeout: 0
+      MaxDatabaseConnections: 0
+
+  Catalog and Schema Information:
+
+              DefaultCatalog: 'university'
+                    Catalogs: {'aulas', 'information_schema', 'monitoreo' ... and 4 more}
+                     Schemas: {}
+
+  Database and Driver Information:
+
+         DatabaseProductName: 'MariaDB'
+      DatabaseProductVersion: '10.03.000015'
+                  DriverName: 'maodbc.dll'
+               DriverVersion: '03.01.0003'
+
+>> data = fetch(conn,['SHOW TABLES'])
+
+data =
+
+  7×1 cell array
+
+    {'classrooms'     }
+    {'members'        }
+    {'professors'     }
+    {'schedule'       }
+    {'schedule_blocks'}
+    {'students'       }
+    {'subjects'       }
+
+>> data2 = fetch(conn,['SELECT * FROM professors'])
+
+data2 =
+
+  6×4 cell array
+
+    {[1]}    {[8452045]}    {'Teodoro' }    {'Busch'     }
+    {[2]}    {[7442017]}    {'Gonzalo' }    {'Vargas'    }
+    {[3]}    {[6432146]}    {'Teresa'  }    {'Am£squivar'}
+    {[4]}    {[5421048]}    {'Fernando'}    {'V squez'   }
+    {[5]}    {[4422043]}    {'Sonia'   }    {'Cordero'   }
+    {[6]}    {[3132041]}    {'Rafael'  }    {'Valencia'  }
+
+>> data2 = fetch(conn,['SELECT first_name FROM professors'])
+
+data2 =
+
+  6×1 cell array
+
+    {'Teodoro' }
+    {'Gonzalo' }
+    {'Teresa'  }
+    {'Fernando'}
+    {'Sonia'   }
+    {'Rafael'  }
+
+>> data2
+
+data2 =
+
+  6×1 cell array
+
+    {'Teodoro' }
+    {'Gonzalo' }
+    {'Teresa'  }
+    {'Fernando'}
+    {'Sonia'   }
+    {'Rafael'  }
+
+>> data2(1)
+
+ans =
+
+  1×1 cell array
+
+    {'Teodoro'}
+
+>> data3 = ['hola' 'chau']
+
+data3 =
+
+    'holachau'
+
+>> data3 = ['hola';'chau']
+
+data3 =
+
+  2×4 char array
+
+    'hola'
+    'chau'
+
+>> data3(1)
+
+ans =
+
+    'h'
+
+>> data3 = [{'hola'} {'chau'}]
+
+data3 =
+
+  1×2 cell array
+
+    {'hola'}    {'chau'}
+
+>> data3(1)
+
+ans =
+
+  1×1 cell array
+
+    {'hola'}
+
+>> data3(2)
+
+ans =
+
+  1×1 cell array
+
+    {'chau'}
+
+>> data3(3)
+Index exceeds matrix dimensions.
+ 
+>> data3(1)
+
+ans =
+
+  1×1 cell array
+
+    {'hola'}
+
+>> data3(1)(1)
+Error: ()-indexing must appear last in an index expression.
+ 
+>> data3(1,1)
+
+ans =
+
+  1×1 cell array
+
+    {'hola'}
+
+>> data3(1,0)
+Subscript indices must either be real positive integers or logicals.
+ 
+>> data3(1,2)
+
+ans =
+
+  1×1 cell array
+
+    {'chau'}
+
+>> data3(1,3)
+Index exceeds matrix dimensions.
+ 
+>> data3(1,2)
+
+ans =
+
+  1×1 cell array
+
+    {'chau'}
+
+>> data3(2,2)
+Index exceeds matrix dimensions.
+ 
+>> data3
+
+data3 =
+
+  1×2 cell array
+
+    {'hola'}    {'chau'}
+
+>> data3
+
+data3 =
+
+  1×2 cell array
+
+    {'hola'}    {'chau'}
+
+>> data4 = cell2table(data3)
+
+data4 =
+
+  1×2 table
+
+    data31    data32
+    ______    ______
+
+    'hola'    'chau'
+
+>> data5 = cell2mat(data3)
+
+data5 =
+
+    'holachau'
+
+>> data5 = cell2mat(data3(1))
+
+data5 =
+
+    'hola'
+
+>> data5 = cell2mat(data3(1))
+
+data5 =
+
+    'hola'
+
+>> data5(2)
+
+ans =
+
+    'o'
+
+>> data2 = fetch(conn,['SELECT first_name,last_name FROM professors'])
+
+data2 =
+
+  6×2 cell array
+
+    {'Teodoro' }    {'Busch'     }
+    {'Gonzalo' }    {'Vargas'    }
+    {'Teresa'  }    {'Am£squivar'}
+    {'Fernando'}    {'V squez'   }
+    {'Sonia'   }    {'Cordero'   }
+    {'Rafael'  }    {'Valencia'  }
+
+>> set utf8
+Error using set
+Invalid handle
+ 
+>> execute(conn,['UPDATE students SET first_name = "Carmelo" where student_id=4'])
+Undefined function 'execute' for input arguments of type 'database.odbc.connection'.
+ 
+>> exec(conn,['UPDATE students SET first_name = "Carmelo" where student_id=4'])
+
+ans = 
+
+  cursor with properties:
+
+         Data: 0
+     RowLimit: 0
+     SQLQuery: 'UPDATE students SET first_name = "Carmelo" where student_id=4'
+      Message: []
+         Type: 'ODBCCursor Object'
+    Statement: [1×1 database.internal.ODBCStatementHandle]
+
+>> data2 = fetch(conn,['SELECT * FROM students'])
+
+data2 =
+
+  6×6 cell array
+
+    {[1]}    {'1'     }    {[1692766]}    {[8462045]}    {'Carlos'  }    {'Arena'   }
+    {[2]}    {'12'    }    {[1622263]}    {[7462015]}    {'Fernando'}    {'Loro¤o'  }
+    {[3]}    {'123'   }    {[1891166]}    {[6462145]}    {'Sergio'  }    {'Ram¡rez' }
+    {[4]}    {'1234'  }    {[2692766]}    {[5461045]}    {'Carmelo' }    {'Flores'  }
+    {[5]}    {'12345' }    {[7694763]}    {[4412045]}    {'Angel'   }    {'Arellano'}
+    {[6]}    {'123456'}    {[5292763]}    {[3162045]}    {'Paul'    }    {'Cardozo' }
+
+>> close(conn)
+>> data2 = fetch(conn,['SELECT * FROM students'])
+Error using database.odbc.connection/fetch (line 33)
+Invalid connection.
+ 
